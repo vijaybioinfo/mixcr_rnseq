@@ -1,0 +1,12 @@
+---
+project_id: sctrial
+fastqs: "./data/good_cells.csv" # either a path to the folder or a text file with paths
+output_dir: "/mnt/BioAdHoc/Groups/vd-vijay/cramirez/amg319/results/mixcr"
+job:
+  walltime: 02:00:00
+  mem: 10gb
+  ppn: 1
+  nodes: 1
+  submit: yes # yes, no, or force
+pipeline: ./
+...
