@@ -39,6 +39,7 @@ FASTQS="$(read_yaml ${CONFIG_FILE} fastqs)"
 OUTPUT_DIR="$(read_yaml ${CONFIG_FILE} output_dir)"
 PROJECT_ID="$(read_yaml ${CONFIG_FILE} project_id)"
 OUTDIR=${OUTDIR%/}/${PROJECT_ID}
+MIXCR_JAR="$(read_yaml ${CONFIG_FILE} mixcr_jar)"
 
 ## Job coordination
 SUBMIT="$(read_yaml ${CONFIG_FILE} submit)"
@@ -114,7 +115,6 @@ cat <<EOT > ${JOBFILE}.sh
 #                                                                    #
 ######################################################################
 
-source /home/ciro/scripts/functions/bash_functions.sh
 SAMP=\$(head -n \$PBS_ARRAYID "${SAMPLES_FILE}" | tail -n 1)
 SNAME=\`basename \${SAMP}\`
 
@@ -147,7 +147,7 @@ echo -----------------------------------------------------------------
 ######################################################################
 
 # The working directory for the job is inside the scratch directory
-WORKDIR=/mnt/BioScratch/\${USER}/mixcr/\${SNAME}
+WORKDIR=${SCRATCH_DIR}/\${USER}/mixcr/\${SNAME}
 
 # This is the directory on 'local' where your project is stored
 PROJDIR=${OUTDIR}/\${SNAME}
@@ -157,20 +157,6 @@ PROJDIR=${OUTDIR}/\${SNAME}
 #   Extra job monitoring code.                                       #
 #                                                                    #
 ######################################################################
-
-# Job resource monitoring and summarisation
-# https://confluence.lji.org/display/BIODOCS/Job+Resource+Monitoring+and+Summarization
-declare -ix RSAMPLER_FREQ_SEC=5
-declare -x  RSAMPLER_TMP_PATH=/mnt/BioScratch/\${USER}/mem_usage
-declare -x  RSAMPLER_FILE="\${PBS_JOBNAME}_\${PBS_JOBID}"_resource_samples.txt
-declare -x  RSAMPLER_OUTPUT="\${RSAMPLER_TMP_PATH}/\${RSAMPLER_FILE}"
-declare -x  RSAMPLER_TERM="\${RSAMPLER_TMP_PATH}/\${PBS_JOBID}_finished"
-mkdir --parents \${RSAMPLER_TMP_PATH}
-
-# start the sampler starting with our scripts parent id then capture the sampler pid
-resourceSampler \$PPID &
-RSAMPLER_PID=\$!
-RSTART=\$(date +%s)
 
 function logger(){
     echo "$(hostname): Array Number: \$PBS_ARRAYID $(date): \$1"
@@ -211,7 +197,7 @@ runprogram()
 {
   echo "**** Vijay Lab - LJI"
   echo "Working at: \`pwd\`"
-  mixcr='java -Xmx4g -Xms3g -jar /mnt/BioHome/ciro/bin/mixcr-2.1.10/mixcr.jar'
+  mixcr='java -Xmx4g -Xms3g -jar ${MIXCR_JAR}'
 
   FILES=(\`ls \${SAMP}*R*.fastq*\`)
   echo "\${#FILES[@]} samples"
@@ -326,17 +312,6 @@ logger "Finished."
 #   therein.                                                         #
 #                                                                    #
 ######################################################################
-
-# stop sampler which will print its info and clean up
-touch "\$RSAMPLER_TERM"
-# wait for sampler to finish
-wait \$RSAMPLER_PID
-# rm -f "\$RSAMPLER_OUTPUT"
-REND=\$(date +%s)
-echo "Start \$(date -d @\${RSTART})"
-echo "End \$(date -d @\${REND})"
-echo "Finished \${PBS_JOBNAME}: \$PBS_JOBID in \$((REND-RSTART)) seconds."
-echo "\`convertsecs \$((REND-RSTART))\` total"
 
 exit
 EOT
