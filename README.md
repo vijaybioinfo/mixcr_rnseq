@@ -5,7 +5,7 @@
 All the information goes into the configuration file (YAML format). There is an example (config.yaml) with comments regarding the files' format.
 
 The files you need to prepare are:
-You probably just need to prepare the FASTQ file with paths to the files if not all of them need to be analysed.
+  - You need to provide the path to the location of the FASTQ paths. If not all of them need to be analysed, you just need to prepare a text (CSV, TXT) file with paths to the FASTQ files.
 
 ### Install
 Clone this repository (your ~/bin folder is a good place).
