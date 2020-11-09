@@ -38,8 +38,10 @@ function read_yaml(){
 FASTQS="$(read_yaml ${CONFIG_FILE} fastqs)"
 OUTPUT_DIR="$(read_yaml ${CONFIG_FILE} output_dir)"
 PROJECT_ID="$(read_yaml ${CONFIG_FILE} project_id)"
-OUTDIR=${OUTDIR%/}/${PROJECT_ID}
+OUTDIR=${OUTPUT_DIR%/}/${PROJECT_ID}
 MIXCR_JAR="$(read_yaml ${CONFIG_FILE} mixcr_jar)"
+SCRATCH_DIR="$(read_yaml ${CONFIG_FILE} scratch_dir)"
+SCRATCH_DIR=${SCRATCH_DIR%/}
 
 ## Job coordination
 SUBMIT="$(read_yaml ${CONFIG_FILE} submit)"
@@ -57,7 +59,7 @@ echo -e "\033[0;36m------------------------------- PRESENTING PARAMETERS -------
 echo "Fastqs: ${FASTQS}"
 echo "Output directory: ${OUTDIR}"
 echo -e "\033[0;36m------------------------------- --------------------- -------------------------------\033[0m"
-if [ ${DEPEND} == "NONE"  ]; then read -n 1 -s -r -p "Press any key to continue"; fi; echo
+if [[ ${DEPEND} == "NONE" ]]; then read -n 1 -s -r -p "Press any key to continue"; fi; echo
 echo; echo
 if [[ ! -d "${OUTDIR}" ]]; then mkdir --parents "${OUTDIR}"; fi
 ls -loh "${OUTDIR}"
