@@ -70,11 +70,10 @@ if [[ -d "${FASTQS}" ]]; then
   echo "From directory"
   FASTQS=${FASTQS%/}
   MYSAMPLES=(`find "${FASTQS}" | grep 001.fastq | grep -v Undetermined | sed 's/_S[0-9]\{1,\}_L.*//g' | sort -u`)
-elif [[ -s "${FASTQS}" ]]; then
-  echo "From file"
-  MYSAMPLES=(`cut -d, -f1 "${FASTQS}"`)
 else
-  MYSAMPLES=${FASTQS[@]}
+  echo "From file"
+  if [[ -f "${FASTQS}" ]]; then echo "${FASTQS} exists"; fi
+  MYSAMPLES=(`cut -d, -f1 "${FASTQS}"`)
 fi
 SAMPLES_FILE="${OUTDIR}/sample_names_${#MYSAMPLES[@]}.txt"
 if [[ -s "${SAMPLES_FILE}" ]]; then rm "${SAMPLES_FILE}"; fi # delete it if it exists
