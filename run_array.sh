@@ -56,8 +56,8 @@ DEPEND="${DEPEND:-NONE}"
 
 echo; echo "**** Vijay Lab - LJI"
 echo -e "\033[0;36m------------------------------- PRESENTING PARAMETERS -------------------------------\033[0m"
-echo "Fastqs: ${FASTQS}"
-echo "Output directory: ${OUTDIR}"
+echo "Fastqs: ${FASTQS}."
+echo "Output directory: ${OUTDIR}."
 echo -e "\033[0;36m------------------------------- --------------------- -------------------------------\033[0m"
 if [[ ${DEPEND} == "NONE" ]]; then read -n 1 -s -r -p "Press any key to continue"; fi; echo
 echo; echo
