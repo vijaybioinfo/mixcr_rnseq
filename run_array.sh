@@ -38,7 +38,7 @@ function read_yaml(){
 FASTQS="$(read_yaml ${CONFIG_FILE} fastqs)"
 OUTPUT_DIR="$(read_yaml ${CONFIG_FILE} output_dir)"
 PROJECT_ID="$(read_yaml ${CONFIG_FILE} project_id)"
-OUTDIR=${OUTPUT_DIR%/}/${PROJECT_ID}
+OUTDIR=${OUTPUT_DIR%/}/${PROJECT_ID}/results
 MIXCR_JAR="$(read_yaml ${CONFIG_FILE} mixcr_jar)"
 SCRATCH_DIR="$(read_yaml ${CONFIG_FILE} scratch_dir)"
 SCRATCH_DIR=${SCRATCH_DIR%/}
