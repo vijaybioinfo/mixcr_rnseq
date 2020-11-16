@@ -81,8 +81,8 @@ echo -e "\033[0;35m>>>>>>>\033[0m Getting samples \033[0;35m<<<<<<<\033[0m"
 for SAMPLE_I in ${MYSAMPLES[@]}; do # check which samples need to be processed
   SAMPLE_NAME=$(basename ${SAMPLE_I})
   # echo -e "\033[0;35m>>>>>>>\033[0m ${SAMPLE_NAME} \033[0;35m<<<<<<<\033[0m"
-  if [ `ls "${SAMPLE_I}*fastq.gz" | wc -l` -eq 0 ]; then
-    echo "${SAMPLE_NAME} does not exist"; continue
+  if [ `ls "$(dirname "${SAMPLE_I}")" | grep ${SAMPLE_NAME} | grep fastq | wc -l` -eq 0 ]; then
+    echo "${SAMPLE_I}*fastq.gz does not exist"; continue
   elif [ -s "${OUTDIR}/${SAMPLE_NAME}/clones_TRB.txt" ]; then
     printf "\033[0;32m${SAMPLE_NAME} already processed\033[0m: "; continue
   fi
