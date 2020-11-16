@@ -46,7 +46,7 @@ SCRATCH_DIR=${SCRATCH_DIR%/}
 ## Job coordination
 SUBMIT="$(read_yaml ${CONFIG_FILE} submit)"
 DEPEND="$(read_yaml ${CONFIG_FILE} dependency)"
-WALLTIME="$(read_yaml ${CONFIG_FILE} walltime)"
+WALLTIME="$(sed 's/#.*//g' ${CONFIG_FILE} | grep walltime: | sed 's/.*: //; s/\"//g')"
 MEM="$(read_yaml ${CONFIG_FILE} mem)"
 NODES="$(read_yaml ${CONFIG_FILE} nodes)"
 PPN="$(read_yaml ${CONFIG_FILE} ppn)"
