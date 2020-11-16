@@ -70,7 +70,7 @@ if [[ -d "${FASTQS}" ]]; then
   echo "From directory"
   FASTQS=${FASTQS%/}
   MYSAMPLES=(`find "${FASTQS}" | grep 001.fastq | grep -v Undetermined | sed 's/_S[0-9]\{1,\}_L.*//g' | sort -u`)
-elif [[ ""${FASTQS}"" =~ ".csv" ]]; then
+elif [[ -f "${FASTQS}" ]]; then
   echo "From file"
   MYSAMPLES=(`cut -d, -f1 "${FASTQS}"`)
 else
