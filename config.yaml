@@ -1,14 +1,16 @@
 ---
 project_id: sctrial
-fastqs: "./data/good_cells.csv" # either a path to the folder or a text file with paths
+# either a path to the folder or a text file with paths
+fastqs: "./data/good_cells.csv"
 output_dir: "/mnt/BioAdHoc/Groups/vd-vijay/cramirez/amg319/results/mixcr"
 job:
   walltime: 02:00:00
   mem: 10gb
   ppn: 1
   nodes: 1
-  submit: yes # yes, no, or force
+  submit: yes
 mixcr_jar: /home/ciro/bin/mixcr-2.1.10/mixcr.jar
 pipeline: ./
-scratch_dir: /mnt/beegfs # location for temporal data storage
+# location for temporal data storage
+scratch_dir: /mnt/beegfs
 ...
